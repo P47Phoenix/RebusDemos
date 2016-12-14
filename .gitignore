@@ -1,5 +1,7 @@
 obj
 bin
+.vs
+.vs/*
 deploy
 deploy/*
 packages
