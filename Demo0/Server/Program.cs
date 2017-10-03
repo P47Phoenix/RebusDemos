@@ -19,11 +19,14 @@ namespace Server
                 });
 
                 Configure.With(activator)
-                    .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseMsmq("server"))
-                    .Start();
+                    .Logging(l => l.ColoredConsole())
+                    .Transport(t => t.UseAmazonSQS("", "", Amazon.RegionEndpoint.USWest2, "server", new AmazonSQSTransportOptions
+                    {
+                        ReceiveWaitTimeSeconds = 20
+                    })).Start();
 
                 Console.WriteLine("Press ENTER to quit");
+
                 Console.ReadLine();
             }
         }

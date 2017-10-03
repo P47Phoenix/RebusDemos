@@ -13,13 +13,18 @@ namespace Client
             using (var activator = new BuiltinHandlerActivator())
             {
                 var bus = Configure.With(activator)
-                    .Logging(l => l.ColoredConsole(LogLevel.Warn))
-                    .Transport(t => t.UseMsmqAsOneWayClient())
+                    .Logging(l => l.ColoredConsole())
+                    .Transport(t => t.UseAmazonSQS("", "", Amazon.RegionEndpoint.USWest2, "server", new AmazonSQSTransportOptions
+                    {
+                        ReceiveWaitTimeSeconds = 20
+                    }))
                     .Routing(t => t.TypeBased().Map<string>("server"))
                     .Start();
 
+                Console.WriteLine();
                 while (true)
                 {
+
                     Console.Write("> ");
                     var text = Console.ReadLine();
 
